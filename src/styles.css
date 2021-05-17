@@ -1,4 +1,27 @@
+*{
+    margin: 0px;
+    letter-spacing: 0.5px;
+    font-family: 'Open Sans', sans-serif;
+}
 
-h1{
-    color: brown;
+h2{
+    margin: 0px;
+}
+
+body {
+    background-color: #F3F7FA;
+}
+
+.gridApp{
+    display: flex;
+    flex-direction: row;
+    margin-top: 50px;
+    width: 50%;
+}
+
+.logo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
 }

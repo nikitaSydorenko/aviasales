@@ -1,0 +1,74 @@
+.filterBar{
+    background-color: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    width: 232px;
+    height: 252px;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+.containerr{
+    width: 100%;
+    margin: auto;
+}
+
+.filterBar h4{
+    margin-left: 20px;
+    color: #4A4A4A;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 12px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.containerInputs{
+    display: flex;
+    flex-direction: column;
+}
+
+.filterName {
+    height: 40px;
+    width: 232px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    cursor: pointer;
+}
+
+.filterName:hover{
+    background-color: #F1FCFF;
+}
+
+.filterName span{
+    margin-left: 10px;
+    color: #4A4A4A;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 20px;
+}
+
+.containerInputs input {
+    margin: 0px;
+    margin-left: 20px;
+    width: 20px;
+    height: 20px;
+    color: #2196F3;
+    cursor: pointer;
+
+}
+
+/*input[type=checkbox]:after {*/
+/*    content: " ";*/
+/*    background-color: #FFFFFF;*/
+/*    display: inline-block;*/
+/*    visibility: visible;*/
+/*}*/
+
+/*input[type=checkbox]:checked:after {*/
+/*    content: "\2714";*/
+/*}*/
+
