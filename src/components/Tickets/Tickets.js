@@ -1,112 +1,39 @@
-import React, {useEffect, useState} from 'react';
-import {getId, getPackTickets} from "../../utils/api/requestToTicketsApi";
-import logoAirline from '../../assets/logoAirline.png'
+import React, {useCallback, useContext, useEffect, useState} from 'react';
+import Ticket from "./Ticket";
+import {MyContextt} from "../MyContext";
 import '../../styles/Tickets.css'
 
 const Tickets = () => {
-    const [tickets, setTickets] = useState([]);
+    const tickets = useContext(MyContextt);
+    const [activeTab, setActiveTab] = useState(false);
+    const [lowPrice, setLowPrice] = useState([]);
 
-    useEffect(async () => {
+    const onChangeLowPrice = useCallback(() => {
+        setActiveTab(true)
+        const sortByLowPrice = tickets.sort((a, b) => a.price > b.price ? 1 : -1)
+        setLowPrice([...sortByLowPrice.slice(0, 1)]);
+    }, [tickets, lowPrice])
 
-        const id = await getId()
-        const res = await getPackTickets(id.data.searchId);
-        setTickets(res.data.tickets)
-        console.log(res.data)
-    }, [tickets]);
+    const onChangeQuickest = useCallback(() => {
+       const res = tickets.filter(e => console.log(e.segments));
+        console.log(res);
+    }, [tickets])
 
     return (
         <div className="containerTickets">
             <div className='tabs'>
-                <div className="tabTicket">
+                <div onClick={onChangeLowPrice} className={ activeTab ? "active" : "tabTicket"}>
                     <h2>Самый дешевый</h2>
                 </div>
-                <div className="tabTicket">
+                <div onClick={onChangeQuickest} className="tabTicket">
                     <h2>Самый быстрый</h2>
                 </div>
                 <div className="tabTicket">
                     <h2>Оптимальный</h2>
                 </div>
             </div>
-
-
             <div className="tickets">
-                <div className="ticket">
-                    <div className="headerTicket">
-                        <div className="price">
-                            <h2>13 200р</h2>
-                        </div>
-                        <div className="logoAirline">
-                            <img src={logoAirline} alt=""/>
-                        </div>
-                    </div>
-                    <div className="flightDuration">
-                        <div className="flightTime">
-                            <h4>MOW – HKT</h4>
-                            <h5>10:45 – 08:00</h5>
-                        </div>
-                        <div className="flightTime">
-                            <h4>В пути</h4>
-                            <h5>21ч 15м</h5>
-                        </div>
-                        <div className="flightTime">
-                            <h4>2 пересадки</h4>
-                            <h5>HKG, JNB</h5>
-                        </div>
-                    </div>
-                    <div className="flightDuration">
-                        <div className="flightTime">
-                            <h4>MOW – HKT</h4>
-                            <h5>10:45 – 08:00</h5>
-                        </div>
-                        <div className="flightTime">
-                            <h4>В пути</h4>
-                            <h5>21ч 15м</h5>
-                        </div>
-                        <div className="flightTime">
-                            <h4>2 пересадки</h4>
-                            <h5>HKG, JNB</h5>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="ticket">
-                    <div className="headerTicket">
-                        <div className="price">
-                            <h2>13 200р</h2>
-                        </div>
-                        <div className="logoAirline">
-                            <img src={logoAirline} alt=""/>
-                        </div>
-                    </div>
-                    <div className="flightDuration">
-                        <div className="flightTime">
-                            <h4>MOW – HKT</h4>
-                            <h5>10:45 – 08:00</h5>
-                        </div>
-                        <div className="flightTime">
-                            <h4>В пути</h4>
-                            <h5>21ч 15м</h5>
-                        </div>
-                        <div className="flightTime">
-                            <h4>2 пересадки</h4>
-                            <h5>HKG, JNB</h5>
-                        </div>
-                    </div>
-                    <div className="flightDuration">
-                        <div className="flightTime">
-                            <h4>MOW – HKT</h4>
-                            <h5>10:45 – 08:00</h5>
-                        </div>
-                        <div className="flightTime">
-                            <h4>В пути</h4>
-                            <h5>21ч 15м</h5>
-                        </div>
-                        <div className="flightTime">
-                            <h4>2 пересадки</h4>
-                            <h5>HKG, JNB</h5>
-                        </div>
-                    </div>
-                </div>
+                {tickets.map((ticket, index) => <Ticket key={index} ticket={ticket} /> )}
             </div>
         </div>
     )

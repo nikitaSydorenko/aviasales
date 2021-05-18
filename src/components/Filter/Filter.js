@@ -1,7 +1,10 @@
-import React from 'react';
+import React, {useContext, useState} from 'react';
 import '../../styles/Filter.css'
+import {MyContextt} from "../MyContext";
 
-const Filter = () => {
+const Filter = ({ch, onChangeTimesStops}) => {
+    const value = useContext(MyContextt);
+    console.log(value)
     return (
         <div className='filterBar'>
             <div className="containerr">
@@ -10,24 +13,24 @@ const Filter = () => {
                 </div>
                 <div className="containerInputs">
                     <div className="filterName">
-                        <input defaultChecked={true} value={true} type="checkbox"/>
-                        <span>все</span>
+                        <input id="checkbox-custom1" onChange={onChangeTimesStops} checked={ch} type="checkbox"/>
+                        <label for="checkbox-custom1" className="checkbox-custom-label">все</label>
                     </div>
                     <div className="filterName">
-                        <input type="checkbox"/>
-                        <span>без пересадок</span>
+                        <input id="checkbox-custom2" type="checkbox"/>
+                        <label for="checkbox-custom2">без пересадок</label>
                     </div>
                     <div className="filterName">
-                        <input type="checkbox"/>
-                        <span>1 пересадка</span>
+                        <input id="checkbox-custom3" type="checkbox"/>
+                        <label for="checkbox-custom3">1 пересадка</label>
                     </div>
                     <div className="filterName">
-                        <input type="checkbox"/>
-                        <span>2 пересадки</span>
+                        <input id="checkbox-custom4" type="checkbox"/>
+                        <label for="checkbox-custom4">2 пересадки</label>
                     </div>
                     <div className="filterName">
-                        <input type="checkbox"/>
-                        <span>3 пересадки</span>
+                        <input id="checkbox-custom5" type="checkbox"/>
+                        <label for="checkbox-custom5">3 пересадки</label>
                     </div>
                 </div>
             </div>
