@@ -67,6 +67,7 @@
     position: relative;
     cursor: pointer;
     font-family: 'Open Sans', sans-serif;
+    margin-bottom: 0;
 }
 
 .containerInputs label:before {

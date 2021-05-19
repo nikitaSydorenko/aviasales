@@ -8,29 +8,52 @@ import './styles.css';
 
 const App = () => {
     const [tickets, setTickets] = useState([]);
-    const [ch, setCh] = useState(true)
+
+    const [ch, setCh] = useState({
+        allTickets: true,
+        noTransfers: false,
+        oneTransfer: false,
+        twoTransfer: false,
+        threeTransfers: false
+    })
 
     const getTickets = useCallback(async () => {
         try{
             const id = await getId();
             const res = await getPackTickets(id.data.searchId);
-            setTickets(res.data.tickets.slice(0, 5))
-            console.log(res.data.stop)
+            setTickets([...res.data.tickets])
         }catch (e){
-            console.log(e)
+             await getTickets();
+             console.log(e)
         }
-    }, [])
+    }, []);
 
+    const onChangeStops = useCallback((e) => {
+        const {name, value, checked} = e.target
+        setCh({[name]: value})
+    }, [ch]);
 
-    const onChangeTimesStops = useCallback((e) => {
-        setCh(!ch)
+    useEffect(async () => {
 
-    }, [ch])
-    useEffect(() => {
-        if(ch) {
-            getTickets()
+        if(ch.allTickets) {
+            await getTickets()
         }
 
+        if(ch.noTransfers){
+           let t = tickets.filter(ticket => {
+                for(let i = 0; i < tickets.length; i++){
+
+                    return ticket.segments[i].stops.length === 0;
+
+                    // if(ticket.segments[i].stops.length === 0){
+                    //
+                    // }
+                }
+            })
+            setTickets([...t.slice(0, 5)])
+            console.log(t)
+
+        }
     }, [ch]);
 
     return (
@@ -40,7 +63,7 @@ const App = () => {
         </div>
         <div className="container gridApp">
             <MyContextt.Provider value={tickets}>
-                <Filter ch={ch} onChangeTimesStops={onChangeTimesStops}/>
+                <Filter ch={ch} onChangeStops={onChangeStops}/>
                 <Tickets/>
             </MyContextt.Provider>
         </div>

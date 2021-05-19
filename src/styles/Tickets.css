@@ -15,7 +15,6 @@
 
 .tabTicket{
     width: 168px;
-
     text-align: center;
     display: flex;
     align-items: center;
@@ -66,7 +65,6 @@
     color: #FFFFFF;
     border-right: none;
     height: 48px;
-
 }
 
 .tabTicket:last-child:hover{

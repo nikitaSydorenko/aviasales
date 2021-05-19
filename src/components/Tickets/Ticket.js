@@ -1,21 +1,26 @@
 import React, {useEffect, useState} from 'react';
-import logoAirline from "../../assets/logoAirline.png";
 import '../../styles/Tickets.css'
 
 const Ticket = ({ticket = {}}) => {
-
+    console.log(ticket)
     const [segments, setSegments] = useState([]);
     const [segmentOne, setSegmentOne] = useState({})
     const [segmentTwo, setSegmentTwo] = useState({})
     useEffect(() => {
-        console.log(ticket)
         setSegmentOne(ticket.segments[0])
         setSegmentTwo(ticket.segments[1])
-
     }, []);
 
+    // let t = new Date(ticket.segments[0].date);
+
+    const time1 = ticket.segments[0].duration;
+    const hours1 = Math.floor(time1 /60);
+    const minutes1 = time1 % 60;
+    const time2 = ticket.segments[1].duration;
+    const hours2 = Math.floor(time2 /60);
+    const minutes2 = time2 % 60;
     const stop2 = segmentTwo.stops || {};
-    const {stops = []} = segmentOne;
+    const {stops = []} = ticket.segments[0];
 
     return (
         <div className="ticket">
@@ -34,7 +39,7 @@ const Ticket = ({ticket = {}}) => {
                 </div>
                 <div className="flightTime">
                     <h4>В пути</h4>
-                    <h5>21ч 15м</h5>
+                    <h5>{hours1}ч {minutes1}м</h5>
                 </div>
                 <div className="flightTime">
                     <h4> {stops.length}  пересадки</h4>
@@ -48,7 +53,7 @@ const Ticket = ({ticket = {}}) => {
                 </div>
                 <div className="flightTime">
                     <h4>В пути</h4>
-                    <h5>21ч 15м</h5>
+                    <h5>{hours2}ч {minutes2}м</h5>
                 </div>
                 <div className="flightTime">
                     <h4>{stop2.length} пересадки</h4>

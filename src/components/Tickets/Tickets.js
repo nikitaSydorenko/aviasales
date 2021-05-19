@@ -12,12 +12,12 @@ const Tickets = () => {
         setActiveTab(true)
         const sortByLowPrice = tickets.sort((a, b) => a.price > b.price ? 1 : -1)
         setLowPrice([...sortByLowPrice.slice(0, 1)]);
-    }, [tickets, lowPrice])
+    }, [tickets, lowPrice]);
 
     const onChangeQuickest = useCallback(() => {
        const res = tickets.filter(e => console.log(e.segments));
-        console.log(res);
-    }, [tickets])
+
+    }, [tickets]);
 
     return (
         <div className="containerTickets">
