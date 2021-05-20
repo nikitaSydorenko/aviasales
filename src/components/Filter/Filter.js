@@ -1,10 +1,7 @@
-import React, {useContext, useState} from 'react';
+import React from 'react';
 import '../../styles/Filter.css'
-import {MyContextt} from "../MyContext";
 
 const Filter = ({ch, onChangeStops}) => {
-
-    const value = useContext(MyContextt);
 
     return (
         <div className='filterBar'>
@@ -38,5 +35,4 @@ const Filter = ({ch, onChangeStops}) => {
         </div>
     )
 }
-
 export default Filter

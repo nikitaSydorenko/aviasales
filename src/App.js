@@ -1,73 +1,112 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import logo from './assets/Logo.png'
-import Filter from "./components/Filter/Filter";
-import Tickets from "./components/Tickets/Tickets";
-import {MyContextt} from "./components/MyContext";
-import {getId, getPackTickets} from "./utils/api/requestToTicketsApi";
+import React, { useCallback, useEffect, useState } from 'react';
+import logo from './assets/Logo.png';
+import Filter from './components/Filter/Filter';
+import Tickets from './components/Tickets/Tickets';
+import { MyContextt } from './components/MyContext';
+import { getId, getPackTickets } from './utils/api/requestToTicketsApi';
 import './styles.css';
 
 const App = () => {
     const [tickets, setTickets] = useState([]);
-
     const [ch, setCh] = useState({
         allTickets: true,
         noTransfers: false,
         oneTransfer: false,
         twoTransfer: false,
-        threeTransfers: false
-    })
+        threeTransfers: false,
+    });
 
     const getTickets = useCallback(async () => {
-        try{
+        try {
             const id = await getId();
             const res = await getPackTickets(id.data.searchId);
-            setTickets([...res.data.tickets])
-        }catch (e){
-             await getTickets();
-             console.log(e)
+            return res.data.tickets;
+        } catch (e) {
+            await getTickets();
+            console.error('ERROR!' ,e);
         }
+
     }, []);
 
     const onChangeStops = useCallback((e) => {
-        const {name, value, checked} = e.target
-        setCh({[name]: value})
+        const { name } = e.target;
+        setCh({ ...ch, [name]: !ch[name] });
     }, [ch]);
 
-    useEffect(async () => {
+    const checkIfAnyFilters = () => {
+        const newData = { ...ch };
+        delete newData.allTickets;
+        return Object.values(newData).some((val) => val === true);
+    };
 
-        if(ch.allTickets) {
-            await getTickets()
+    const checkIsUnique = (ticket, listOfTickets) => listOfTickets.indexOf(ticket) < 0;
+    useEffect(async () => {
+        const allTickets = [];
+        const clearData = [];
+
+        if (ch.allTickets) {
+
+            const allTicks = await getTickets();
+
+            allTickets.push(...allTicks);
+        } else {
+            allTickets.push(...tickets);
         }
 
-        if(ch.noTransfers){
-           let t = tickets.filter(ticket => {
-                for(let i = 0; i < tickets.length; i++){
+        if (ch.noTransfers) {
+            const t = allTickets.filter((ticket) => {
+                const vals = ticket.segments.map((segment) => segment.stops.length === 0);
+                return vals.every((val) => val === true);
+            });
+            clearData.push(...t);
+        }
 
-                    return ticket.segments[i].stops.length === 0;
+        if (ch.oneTransfer) {
+            const t = allTickets.filter((ticket) => {
+                const vals = ticket.segments.map((segment) => segment.stops.length === 1);
+                return vals.every((val) => val === true) && checkIsUnique(ticket, clearData);
+            });
+            clearData.push(...t);
+        }
 
-                    // if(ticket.segments[i].stops.length === 0){
-                    //
-                    // }
-                }
-            })
-            setTickets([...t.slice(0, 5)])
-            console.log(t)
+        if (ch.twoTransfer) {
+            const t = allTickets.filter((ticket) => {
+                const vals = ticket.segments.map((segment) => segment.stops.length === 2);
+                return vals.every((val) => val === true) && checkIsUnique(ticket, clearData);
+            });
+            clearData.push(...t);
+        }
 
+        if (ch.threeTransfers) {
+            const t = allTickets.filter((ticket) => {
+                const vals = ticket.segments.map((segment) => segment.stops.length === 3);
+                return vals.every((val) => val === true) && checkIsUnique(ticket, clearData);
+            });
+            clearData.push(...t);
+        }
+
+        if (clearData.length) {
+            setTickets(clearData.sort(() => Math.random() - 0.5));
+        } else if (!checkIfAnyFilters() && ch.allTickets) {
+            setTickets(allTickets);
+        } else {
+            setTickets([]);
         }
     }, [ch]);
 
     return (
-    <div className="app">
-        <div className="logo">
-            <img src={logo} alt=""/>
+        <div className="app">
+            <div className="logo">
+                <img src={logo} alt="" />
+            </div>
+            <div className="container gridApp">
+                <MyContextt.Provider value={tickets}>
+                    <Filter ch={ch} onChangeStops={onChangeStops} />
+                    {ch.allTickets ? <Tickets /> : <span className='changeFilter'>Выберите фильтр для поиска</span>  }
+                </MyContextt.Provider>
+            </div>
         </div>
-        <div className="container gridApp">
-            <MyContextt.Provider value={tickets}>
-                <Filter ch={ch} onChangeStops={onChangeStops}/>
-                <Tickets/>
-            </MyContextt.Provider>
-        </div>
-    </div>
-    )};
+    );
+};
 
 export default App;

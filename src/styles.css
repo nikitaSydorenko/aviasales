@@ -19,6 +19,12 @@ body {
     width: 50%;
 }
 
+.changeFilter{
+    margin: 0 auto;
+    padding-top: 70px;
+    color: #4A4A4A;
+}
+
 .logo{
     display: flex;
     justify-content: center;
