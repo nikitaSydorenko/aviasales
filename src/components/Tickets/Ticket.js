@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import '../../styles/Tickets.css'
+import moment from 'moment';
+import '../../styles/Tickets.css';
 const Ticket = ({ticket = {}}) => {
 
     const [dataTicket, setDataTicket] = useState({})
@@ -13,31 +14,26 @@ const Ticket = ({ticket = {}}) => {
         return hours + ":" + minutes
     }
 
+    const convertTime = (time) => {
+
+        let hours = Math.floor(time / 60);
+        let minutes = time % 60;
+        return `${hours}ч ${minutes}м`
+    }
+
     useEffect(() => {
         console.log(ticket.segments)
         const arrivalTime = msToTime();
-
-        const hours1 = Math.floor(ticket.segments[0].duration / 60);
-        const minutes1 = ticket.segments[0].duration % 60;
-
-        const hours2 = Math.floor(ticket.segments[1].duration / 60);
-        const minutes2 = ticket.segments[1].duration % 60;
-
-        const dateH = new Date(ticket.segments[0].date).getUTCHours();
-        const dateMin = new Date(ticket.segments[0].date).getUTCMinutes();
-        const createHours = dateH < 10 ? `0${dateH}` : dateH;
-        const createMinutes = dateMin < 10 ? `0${dateMin}` : dateMin;
-
-        const dateHBack = new Date(ticket.segments[1].date).getUTCHours();
-        const dateMinBack = new Date(ticket.segments[1].date).getUTCMinutes();
-        const createHoursBack = dateHBack < 10 ? `0${dateHBack}` : dateHBack;
-        const createMinutesBack = dateMinBack < 10 ? `0${dateMinBack}` : dateMinBack;
+        const time1 = convertTime(ticket.segments[0].duration);
+        const time2 = convertTime(ticket.segments[1].duration);
+        const date1 = moment.utc(ticket.segments[0].date).format('HH-mm');
+        const date2 = moment.utc(ticket.segments[1].date).format('HH-mm');
 
         setDataTicket({
-            duration: `${hours1}ч ${minutes1}м`,
-            durationBack: `${hours2}ч ${minutes2}м`,
-            date: `${createHours}:${createMinutes}`,
-            dateBack: `${createHoursBack}:${createMinutesBack}`,
+            duration: time1,
+            durationBack: time2,
+            date: date1,
+            dateBack: date2,
             arrivalTime: arrivalTime
         })
 
