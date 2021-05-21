@@ -7,6 +7,7 @@ import { getId, getPackTickets } from './utils/api/requestToTicketsApi';
 import './styles.css';
 
 const App = () => {
+
     const [tickets, setTickets] = useState([]);
     const [ch, setCh] = useState({
         allTickets: true,
@@ -20,6 +21,13 @@ const App = () => {
         try {
             const id = await getId();
             const res = await getPackTickets(id.data.searchId);
+            if (res.status === 502) {
+                await getTickets();
+            }else if (res.status !== 200) {
+                console.log(res.statusText);
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                await getTickets();
+            }
             return res.data.tickets;
         } catch (e) {
             await getTickets();
