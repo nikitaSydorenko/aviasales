@@ -4,21 +4,18 @@ const Ticket = ({ticket = {}}) => {
 
     const [dataTicket, setDataTicket] = useState({})
 
-    console.log(ticket)
+    const msToTime = (duration) => {
+        const durationArrivalTime = new Date(ticket.segments[0].date).getTime() + ticket.segments[0].duration * 60 * 1000;
+        let minutes = Math.floor((durationArrivalTime / (1000 * 60)) % 60),
+            hours = Math.floor((durationArrivalTime / (1000 * 60 * 60)) % 24);
+            hours = (hours < 10) ? "0" + hours : hours;
+            minutes = (minutes < 10) ? "0" + minutes : minutes;
+        return hours + ":" + minutes
+    }
 
     useEffect(() => {
-        // const timeOfArrivalHours = new Date(ticket.segments[0].date).getUTCHours();
-        //
-        //
-        // const h = timeOfArrivalHours + ticket.segments[0].duration;
-        //
-        //
-        // const timeOfArrivalMinutes = ticket.segments[0].duration + ticket.segments[1].duration
-        // let l = 1343 + ticket.segments[0].duration; //dur
-        // let mib = l % 60
-        // let hr = Math.floor(l / 60)
-        // console.log( hr + ':' + mib);
-
+        console.log(ticket.segments)
+        const arrivalTime = msToTime();
 
         const hours1 = Math.floor(ticket.segments[0].duration / 60);
         const minutes1 = ticket.segments[0].duration % 60;
@@ -40,8 +37,8 @@ const Ticket = ({ticket = {}}) => {
             duration: `${hours1}ч ${minutes1}м`,
             durationBack: `${hours2}ч ${minutes2}м`,
             date: `${createHours}:${createMinutes}`,
-            dateBack: `${createHoursBack}:${createMinutesBack}`
-
+            dateBack: `${createHoursBack}:${createMinutesBack}`,
+            arrivalTime: arrivalTime
         })
 
     }, [ticket])
@@ -59,7 +56,7 @@ const Ticket = ({ticket = {}}) => {
             <div className="flightDuration">
                 <div className="flightTime">
                     <h4>{ticket.segments[0].origin} – {ticket.segments[0].destination}</h4>
-                    <h5>{dataTicket.date } – 08:00</h5>
+                    <h5>{dataTicket.date } – {dataTicket.arrivalTime}</h5>
                 </div>
                 <div className="flightTime">
                     <h4>В пути</h4>

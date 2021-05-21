@@ -96,6 +96,12 @@
     transform: rotate(45deg);
 }
 
+@media screen and (max-width: 950px) {
+    .filterBar{
+        width: 100%;
+        margin-bottom: 20px;
+    }
+}
 
 
 

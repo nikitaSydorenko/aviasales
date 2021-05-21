@@ -162,3 +162,46 @@
     color: #A0B0B9;
     margin: 0px;
 }
+
+@media screen and (max-width: 950px) {
+    .containerTickets{
+        margin-left: 0px;
+        width: 100%;
+    }
+    .ticket{
+        width: 100%;
+    }
+    .tabs{
+        width: 100%;
+
+    }
+    .tabTicket{
+        width: 33.3%;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .ticket{
+        padding: 15px;
+    }
+    .headerTicket{
+        width: 100%;
+
+    }
+    .flightDuration{
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 400px){
+    .flightTime h5{
+        font-size: 12px;
+    }
+    .ticket{
+        zoom: 0.9;
+
+    }
+    .flightTime h4{
+        line-height: 13px;
+    }
+}
