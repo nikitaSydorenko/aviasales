@@ -5,12 +5,12 @@ const Ticket = ({ticket = {}}) => {
 
     const [dataTicket, setDataTicket] = useState({})
 
-    const msToTime = (duration) => {
-        const durationArrivalTime = new Date(ticket.segments[0].date).getTime() + ticket.segments[0].duration * 60 * 1000;
+    const msToTime = (date, duration) => {
+        const durationArrivalTime = new Date(date).getTime() + duration * 60 * 1000;
         let minutes = Math.floor((durationArrivalTime / (1000 * 60)) % 60),
             hours = Math.floor((durationArrivalTime / (1000 * 60 * 60)) % 24);
-            hours = (hours < 10) ? "0" + hours : hours;
-            minutes = (minutes < 10) ? "0" + minutes : minutes;
+        hours = (hours < 10) ? "0" + hours : hours;
+        minutes = (minutes < 10) ? "0" + minutes : minutes;
         return hours + ":" + minutes
     }
 
@@ -22,8 +22,9 @@ const Ticket = ({ticket = {}}) => {
     }
 
     useEffect(() => {
-        console.log(ticket.segments)
-        const arrivalTime = msToTime();
+
+        const arrivalTime = msToTime(ticket.segments[0].date, ticket.segments[0].duration);
+        const arrivalTimeBack = msToTime(ticket.segments[1].date, ticket.segments[1].duration)
         const time1 = convertTime(ticket.segments[0].duration);
         const time2 = convertTime(ticket.segments[1].duration);
         const date1 = moment.utc(ticket.segments[0].date).format('HH-mm');
@@ -34,7 +35,8 @@ const Ticket = ({ticket = {}}) => {
             durationBack: time2,
             date: date1,
             dateBack: date2,
-            arrivalTime: arrivalTime
+            arrivalTime: arrivalTime,
+            arrivalTimeBack: arrivalTimeBack
         })
 
     }, [ticket])
@@ -60,13 +62,13 @@ const Ticket = ({ticket = {}}) => {
                 </div>
                 <div className="flightTime">
                     <h4> {ticket.segments[0].stops.length ? ticket.segments[0].stops.length : 'без'}  пересадки</h4>
-                    <h5>HKG, JNB</h5>
+                    <h5>{ticket.segments[0].stops + ''}</h5>
                 </div>
             </div>
             <div className="flightDuration">
                 <div className="flightTime">
                     <h4>{ticket.segments[1].origin} – {ticket.segments[1].destination}</h4>
-                    <h5>{dataTicket.dateBack} – 08:00</h5>
+                    <h5>{dataTicket.dateBack} – {dataTicket.arrivalTimeBack}</h5>
                 </div>
                 <div className="flightTime">
                     <h4>В пути</h4>
@@ -74,7 +76,7 @@ const Ticket = ({ticket = {}}) => {
                 </div>
                 <div className="flightTime">
                     <h4>{ticket.segments[1].stops.length ? ticket.segments[1].stops.length : 'без'} пересадки</h4>
-                    <h5>HKG, JNB</h5>
+                    <h5>{ticket.segments[1].stops + ''}</h5>
                 </div>
             </div>
         </div>
