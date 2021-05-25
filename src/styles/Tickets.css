@@ -23,7 +23,21 @@
     box-sizing: border-box;
 }
 
-.active{
+.active:nth-child(2){
+    height: 48px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-right: 1px solid #DFE5EC;
+    box-sizing: border-box;
+    background-color: #2196F3;
+    border-right: none;
+    color: #FFFFFF;
+
+}
+
+.active:first-child{
     width: 168px;
     height: 48px;
     text-align: center;
@@ -33,9 +47,26 @@
     border-right: 1px solid #DFE5EC;
     box-sizing: border-box;
     background-color: #2196F3;
-
     border-right: none;
     color: #FFFFFF;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.active:last-child{
+    width: 168px;
+    height: 48px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-right: 1px solid #DFE5EC;
+    box-sizing: border-box;
+    background-color: #2196F3;
+    border-right: none;
+    color: #FFFFFF;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
 }
 
 .active h2{
@@ -51,12 +82,13 @@
 }
 
 .tabTicket:first-child:hover{
+    border-bottom-left-radius: 5px;
+    border-top-left-radius: 5px;
     background-color: #2196F3;
     color: #FFFFFF;
     border-right: none;
     height: 48px;
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
+
 }
 
 .tabTicket:hover:nth-child(2){
@@ -106,6 +138,7 @@
     justify-content: space-between;
     align-items: center;
 }
+
 .price h2{
     color: #2196F3;
     font-style: normal;
