@@ -23,6 +23,7 @@ const App = () => {
       if (res.status === 502) {
         await getTickets();
       } else if (res.status !== 200) {
+        console.log(res.statusText);
         await getTickets();
       }
       return res.data.tickets;
@@ -49,15 +50,15 @@ const App = () => {
   useEffect(async () => {
     const allTickets = [];
     const clearData = [];
-
+    const allTicks = await getTickets();
     if (ch.allTickets) {
-      const allTicks = await getTickets();
       allTickets.push(...allTicks);
     } else {
       allTickets.push(...tickets);
     }
 
     if (ch.noTransfers) {
+      allTickets.push(...allTicks);
       const temp = allTickets.filter((ticket) => {
         const vals = ticket.segments.map((segment) => segment.stops.length === 0);
         return vals.every((val) => val === true);
@@ -66,6 +67,7 @@ const App = () => {
     }
 
     if (ch.oneTransfer) {
+      allTickets.push(...allTicks);
       const temp = allTickets.filter((ticket) => {
         const vals = ticket.segments.map((segment) => segment.stops.length === 1);
         return vals.every((val) => val === true) && checkIsUnique(ticket, clearData);
@@ -74,6 +76,7 @@ const App = () => {
     }
 
     if (ch.twoTransfer) {
+      allTickets.push(...allTicks);
       const t = allTickets.filter((ticket) => {
         const vals = ticket.segments.map((segment) => segment.stops.length === 2);
         return vals.every((val) => val === true) && checkIsUnique(ticket, clearData);
@@ -82,6 +85,7 @@ const App = () => {
     }
 
     if (ch.threeTransfers) {
+      allTickets.push(...allTicks);
       const t = allTickets.filter((ticket) => {
         const vals = ticket.segments.map((segment) => segment.stops.length === 3);
         return vals.every((val) => val === true) && checkIsUnique(ticket, clearData);
@@ -98,6 +102,8 @@ const App = () => {
     }
   }, [ch]);
 
+  console.log(checkIfAnyFilters());
+
   return (
     <div className="app">
       <div className="logo">
@@ -106,7 +112,7 @@ const App = () => {
       <div className="container gridApp">
         <MyContextt.Provider value={tickets}>
           <Filter ch={ch} onChangeStops={onChangeStops} />
-          {ch.allTickets ? <Tickets /> : (
+          {checkIfAnyFilters() || ch.allTickets ? <Tickets /> : (
             <div className="changeFilter">
               <h5>Выберите фильтр для поиска</h5>
             </div>
