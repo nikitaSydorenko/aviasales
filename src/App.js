@@ -23,7 +23,6 @@ const App = () => {
       if (res.status === 502) {
         await getTickets();
       } else if (res.status !== 200) {
-        console.log(res.statusText);
         await getTickets();
       }
       return res.data.tickets;
@@ -107,7 +106,11 @@ const App = () => {
       <div className="container gridApp">
         <MyContextt.Provider value={tickets}>
           <Filter ch={ch} onChangeStops={onChangeStops} />
-          {ch.allTickets ? <Tickets /> : <span className="changeFilter">Выберите фильтр для поиска</span> }
+          {ch.allTickets ? <Tickets /> : (
+            <div className="changeFilter">
+              <h5>Выберите фильтр для поиска</h5>
+            </div>
+          ) }
         </MyContextt.Provider>
       </div>
     </div>

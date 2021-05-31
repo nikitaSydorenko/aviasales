@@ -113,6 +113,8 @@
     font-size: 12px;
     line-height: 20px;
     margin: 0;
+    color: #4A4A4A;
+    text-transform: uppercase;
 }
 
 .tickets:last-child{
@@ -179,7 +181,6 @@
     font-size: 14px;
     line-height: 21px;
     letter-spacing: 0.5px;
-    text-transform: uppercase;
     color: #4A4A4A;
     margin: 0px;
 }
@@ -193,6 +194,26 @@
     text-transform: uppercase;
     color: #A0B0B9;
     margin: 0px;
+}
+
+.showMore{
+    padding-top: 20px;
+    padding-bottom: 50px;
+}
+
+.showMore button{
+    width: 100%;
+    padding: 15px;
+    text-transform: uppercase;
+    background-color: #2196F3;
+    border: none;
+    border-radius: 5px;
+    color: #FFFFFF;
+    outline: none;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 20px;
+    letter-spacing: 0.5px;
 }
 
 @media screen and (max-width: 950px) {

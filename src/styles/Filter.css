@@ -62,14 +62,36 @@
     display: none;
 }
 
-.containerInputs label {
+.filterName label {
     position: relative;
     cursor: pointer;
     font-family: 'Open Sans', sans-serif;
     margin-bottom: 0;
 }
+.filterName:first-child{
+    text-transform: capitalize;
+}
+
+.filterName:nth-child(2) {
+
+    text-transform: capitalize;
+}
 
 .containerInputs label:before {
+    content:'';
+    -webkit-appearance: none;
+    background-color: transparent;
+    border: 1px solid #9ABBCE;
+    padding: 9px;
+    display: inline-block;
+    position: relative;
+    vertical-align: middle;
+    cursor: pointer;
+    margin-right: 10px;
+    border-radius: 2px;
+}
+
+.containerInputs input:checked + label:before {
     content:'';
     -webkit-appearance: none;
     background-color: transparent;
@@ -95,6 +117,10 @@
     border-width: 0 2px 2px 0;
     transform: rotate(45deg);
 }
+
+
+
+
 
 @media screen and (max-width: 950px) {
     .filterBar{

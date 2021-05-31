@@ -1,9 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import moment from 'moment';
 import '../../styles/Tickets.css';
 
 const Ticket = ({ ticket }) => {
   const [dataTicket, setDataTicket] = useState({});
+
+  const checkLengthTransplants = useCallback((transplants) => {
+    if (transplants === 0) {
+      return 'без пересадок';
+    }
+    if (transplants === 1) {
+      return 'пересадка';
+    }
+    if (transplants >= 2) {
+      return 'пересадки';
+    }
+  }, []);
 
   const msToTime = (date, duration) => {
     const durationArrivalTime = new Date(date).getTime() + duration * 60 * 1000;
@@ -21,6 +33,7 @@ const Ticket = ({ ticket }) => {
   };
 
   useEffect(() => {
+    const numbFmt = new Intl.NumberFormat('ru-RU').format(ticket.price);
     const arrivalTime = msToTime(ticket.segments[0].date, ticket.segments[0].duration);
     const arrivalTimeBack = msToTime(ticket.segments[1].date, ticket.segments[1].duration);
     const time1 = convertTime(ticket.segments[0].duration);
@@ -35,6 +48,7 @@ const Ticket = ({ ticket }) => {
       dateBack: date2,
       arrivalTime,
       arrivalTimeBack,
+      price: numbFmt,
     });
   }, [ticket]);
 
@@ -43,7 +57,7 @@ const Ticket = ({ ticket }) => {
       <div className="headerTicket">
         <div className="price">
           <h2>
-            {ticket.price}
+            {dataTicket.price}
             Р
           </h2>
         </div>
@@ -55,12 +69,16 @@ const Ticket = ({ ticket }) => {
         <div className="flightTime">
           <h4>
             {ticket.segments[0].origin}
+            {' '}
             –
+            {' '}
             {ticket.segments[0].destination}
           </h4>
           <h5>
             {dataTicket.date }
+            {' '}
             –
+            {' '}
             {dataTicket.arrivalTime}
           </h5>
         </div>
@@ -70,10 +88,10 @@ const Ticket = ({ ticket }) => {
         </div>
         <div className="flightTime">
           <h4>
-            {ticket.segments[0].stops.length ? ticket.segments[0].stops.length : 'без'}
+            {ticket.segments[0].stops.length ? ticket.segments[0].stops.length : null}
             {' '}
-            пересадки
-
+            {checkLengthTransplants(ticket.segments[0].stops.length)}
+            {' '}
           </h4>
           <h5>{`${ticket.segments[0].stops}`}</h5>
         </div>
@@ -82,12 +100,16 @@ const Ticket = ({ ticket }) => {
         <div className="flightTime">
           <h4>
             {ticket.segments[1].origin}
+            {' '}
             –
+            {' '}
             {ticket.segments[1].destination}
           </h4>
           <h5>
             {dataTicket.dateBack}
+            {' '}
             –
+            {' '}
             {dataTicket.arrivalTimeBack}
           </h5>
         </div>
@@ -97,9 +119,10 @@ const Ticket = ({ ticket }) => {
         </div>
         <div className="flightTime">
           <h4>
-            {ticket.segments[1].stops.length ? ticket.segments[1].stops.length : 'без'}
+            {ticket.segments[1].stops.length ? ticket.segments[1].stops.length : null}
             {' '}
-            пересадки
+            {checkLengthTransplants(ticket.segments[1].stops.length)}
+            {' '}
           </h4>
           <h5>{`${ticket.segments[1].stops}`}</h5>
         </div>

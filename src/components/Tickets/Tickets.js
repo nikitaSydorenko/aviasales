@@ -10,6 +10,11 @@ const Tickets = () => {
   const [quickTicket, setQuickTicket] = useState([]);
   const [optimal, setOptimal] = useState([]);
   const [tabs, setTabs] = useState(['Самый дешевый', 'Самый быстрый', 'Оптимальный']);
+  const [count, setCount] = useState(10);
+
+  const onShowMore = useCallback(() => {
+    setCount((prev) => prev + 5);
+  }, []);
 
   const onChangeTabFilter = useCallback((tab) => () => {
     setActiveTab(tab);
@@ -20,7 +25,7 @@ const Tickets = () => {
 
     if (tab === 'Самый быстрый') {
       const sortByQuickest = tickets.sort((a, b) => (
-        a.segments[0].duration > b.segments[0].duration ? 1 : -1
+        a.segments[0].duration + a.segments[1].duration > b.segments[0].duration + b.segments[1].duration ? 1 : -1
       ));
       setQuickTicket([...sortByQuickest.slice(0, 1)]);
     }
@@ -44,7 +49,10 @@ const Tickets = () => {
         ))}
       </div>
       <div className="tickets">
-        {tickets.slice(0, 10).map((ticket, index) => <Ticket key={index} ticket={ticket} />)}
+        {tickets.slice(0, count).map((ticket, index) => <Ticket key={index} ticket={ticket} />)}
+      </div>
+      <div className="showMore">
+        <button onClick={onShowMore}>Показать еще 5 билетов!</button>
       </div>
     </div>
   );
